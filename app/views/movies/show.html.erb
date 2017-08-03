@@ -23,7 +23,7 @@
       <dt>Director</dt>
       <dd>
         <a href="/directors/<%= @movie.director_id %>">
-          <%= Director.find_by(:id => @movie.director_id).name %>
+          <%= @movie.director.name %>
         </a>
       </dd>
       
@@ -32,11 +32,15 @@
         <%= Character.where(:movie_id => @movie.id).count %>
       </dd>
       
-      <dt>Characters</dt>
+      <dt>Cast</dt>
       <dd>
         <ul>
-          <% Character.where(:movie_id => @movie.id).each do |character| %>
-            <li><a href ="/characters/<%=character.id%>"><%= character.name %></a></li>
+          <% @movie.actors.each do |actor| %>
+            <li>
+              <%= actor.name %>
+              
+              ( <%= Character.find_by(:actor_id => actor.id, :movie_id => @movie.id).name %>)
+            </li>
           <% end %>
         </ul>
           <form action="/create_character" method="post">
@@ -59,7 +63,8 @@
                   Actor
                 </label>
         
-                <input type="text" id="actor_id" name="actor_id" placeholder="Actor" class="form-control" value="<%= @character.actor_id %>">
+                <!--<input type="text" id="actor_id" name="actor_id" placeholder="Actor" class="form-control" value="<%= @character.actor_id %>">-->
+                <%= select_tag(:actor_id, options_from_collection_for_select(Actor.all, :id, :name), :class => "form-control") %>
               </div>
         
               <!-- Label and input for name -->

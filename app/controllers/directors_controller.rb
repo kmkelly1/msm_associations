@@ -25,6 +25,7 @@ class DirectorsController < ApplicationController
     @director.dob = params[:dob]
     @director.bio = params[:bio]
     @director.image_url = params[:image_url]
+  
 
     save_status = @director.save
 
